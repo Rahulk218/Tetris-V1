@@ -33,7 +33,7 @@ resource "aws_security_group" "Jenkins-sg" {
 
   # Define a single ingress rule to allow traffic on all specified ports
   ingress = [
-    for port in [22, 80, 443, 8080, 9000, 3000] : {
+    for port in [22, 80, 443, 8080, 9000, 4000] : {
       description      = "TLS from VPC"
       from_port        = port
       to_port          = port
@@ -59,15 +59,15 @@ resource "aws_security_group" "Jenkins-sg" {
 }
 
 resource "aws_instance" "web" {
-  ami                    = "ami-0df4b2961410d4cff"
-  instance_type          = "t2.medium"
-  key_name               = "purplehaze"
+  ami                    = "ami-0ff5ee92e2d63afc18"
+  instance_type          = "t2.large"
+  key_name               = "devops"
   vpc_security_group_ids = [aws_security_group.Jenkins-sg.id]
   user_data              = templatefile("./install_jenkins.sh", {})
   iam_instance_profile   = aws_iam_instance_profile.example_profile.name
 
   tags = {
-    Name = "Jenkins-argo"
+    Name = "Jenkins-ARGO"
   }
 
   root_block_device {
